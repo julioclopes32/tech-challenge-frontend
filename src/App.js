@@ -20,7 +20,7 @@ function App() {
         <a href="#"><i className="fas fa-video"></i> MovieWiki</a>
       </div>
       <div className="container">
-        <p class="search">Search Movie </p>
+        <p className="search">Search Movie </p>
         <div className="form">
             <input type="text" placeholder="Enter Movie name or keyword" name="movie" required=""/>
             <input type="Submit" value="Find"/>
@@ -30,5 +30,8 @@ function App() {
   );
 }
 
-console.log("oi")
+const fetchData = () => {
+  return axios.get(api)
+        .then((response) => console.log(response.data));}
+
 export default App;
