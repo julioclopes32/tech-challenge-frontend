@@ -3,6 +3,12 @@ import { Helmet } from "react-helmet";
 import api from './services/api';
 
 function App() {
+  const fetchData = () => {
+    return axios.get("https://randomuser.me/api/").then((response) => console.log(response.data));
+  };
+
+  fetchData();
+
   return (
     <div className="App">
       <Helmet>
