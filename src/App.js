@@ -4,10 +4,16 @@ import axios from 'axios';
 
 function App() {
   const fetchData = () => {
-    return axios.get("https://tech-challenge-backend.herokuapp.com/").then((response) => console.log(response.data));
+    return axios.get("https://tech-challenge-backend.herokuapp.com/sms").then((response) => console.log(response.data));
   };
 
   fetchData();
+
+  const fetchData2 = () => {
+    return axios.get("https://tech-challenge-backend.herokuapp.com/").then((response) => console.log(response.data));
+  };
+
+  fetchData2();
 
   return (
     <div className="App">
