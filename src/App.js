@@ -1,10 +1,10 @@
 import './App.css';
 import { Helmet } from "react-helmet";
-import api from './services/api';
+import axios from 'axios';
 
 function App() {
   const fetchData = () => {
-    return axios.get("https://randomuser.me/api/").then((response) => console.log(response.data));
+    return axios.get("https://tech-challenge-backend.herokuapp.com/").then((response) => console.log(response.data));
   };
 
   fetchData();
