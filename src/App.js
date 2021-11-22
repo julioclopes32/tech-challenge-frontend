@@ -30,6 +30,6 @@ function App() {
   );
 }
 
-axios.get(api).then((response) => console.log(response.data))
+console.log("oi")
 
 export default App;
