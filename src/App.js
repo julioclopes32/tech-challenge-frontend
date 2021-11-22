@@ -30,8 +30,6 @@ function App() {
   );
 }
 
-const fetchData = () => {
-  return axios.get(api)
-        .then((response) => console.log(response.data));}
+axios.get(api).then((response) => console.log(response.data))
 
 export default App;
