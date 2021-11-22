@@ -1,10 +1,11 @@
 import './App.css';
+import { Helmet } from "react-helmet";
 import api from './services/api';
 
 function App() {
   return (
     <div className="App">
-      <head>
+      <Helmet>
           <title>MovieWiki</title>
           <meta charset="UTF-8"/>
           <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -12,7 +13,7 @@ function App() {
           <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;500;600&display=swap" rel="stylesheet"/>
           <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
           <link rel="stylesheet" href="/stylesheets/homePage.css"/>
-      </head>
+      </Helmet>
       <div className="back"></div>
       <div className="filter"></div>
       <div className="brand"> 
@@ -29,4 +30,5 @@ function App() {
   );
 }
 
+console.log("oi")
 export default App;
