@@ -54,6 +54,7 @@ const Login = () => {
             <input
             type="email"
             placeholder="Username"
+            defaultValue="Username"
             name="movie"
             required=""
             onChange={(e) => {
@@ -64,6 +65,7 @@ const Login = () => {
             <input
             type="password"
             placeholder="Password"
+            defaultValue="Password"
             name="movie"
             required=""
             onChange={(e) => {

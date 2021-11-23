@@ -55,6 +55,7 @@ const Signin = () => {
             <input
             type="text"
             placeholder="Email"
+            defaultValue = "Email"
             name="movie"
             required=""
             onChange={(e) => {
@@ -65,6 +66,7 @@ const Signin = () => {
             <input
             type="text"
             placeholder="Password"
+            defaultValue = "Password"
             required=""
             onChange={(e) => {
                 setPassword(e.target.value);
@@ -74,6 +76,7 @@ const Signin = () => {
             <input
             type="text"
             placeholder="Confirm Password"
+            defaultValue = "Confirm Password"
             required=""
             onChange={(e) => {
                 setConfirmPass(e.target.value);
