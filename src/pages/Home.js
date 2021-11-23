@@ -8,6 +8,10 @@ var movieData = null;
 
 const Home = () => {
   const history = useHistory();
+    const user = auth.currentUser;
+    if(user === null){
+        history.push('/login')
+    }
   const [movieName, setMovieName] = useState("");
   const apikey = "925eba28"; 
   /*const fetchData = () => {
@@ -44,10 +48,19 @@ const Home = () => {
   };
 
   const submitMovie= () => {
+    if(movieName === ""){
+      alert("fill movie Name!")
+      return
+    }
     return axios.get('https://www.omdbapi.com/?apikey='+apikey+'&s='+encodeURI(movieName)).then(function(response){
       console.log(response.data);
       movieData = response.data;
-      history.push('/Search')
+      if(response.data.Response === "False"){
+        alert(response.data.Error)
+        return
+      }else if (response.data.Response === "True"){
+        history.push('/Search')
+      }
     }); 
   }
 

@@ -3,7 +3,7 @@
     width: 30%;
 }
 
-#login-register:hover{
+.heart:hover{
   text-decoration: underline;
   cursor: pointer;
 }

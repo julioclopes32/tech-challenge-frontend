@@ -1,23 +1,40 @@
 import React from 'react'
 import { movieData } from './Home';
 import './Search.css'
-
+import axios from 'axios';
+import { auth } from '../firebase';
+import {useHistory} from 'react-router-dom';
 
 const Search = () => {
-    if(movieData.Search == null){
-        console.log("is null")
+    const history = useHistory();
+    const user = auth.currentUser._delegate.uid;
+    if(user === null){
+        history.push('/login')
     }
     const movies = movieData.Search
+    console.log(user)
     console.log(movies)
 
-    if(movieData == null){
-        console.log("equals null")
-    }
+    function HomeButton() {
+        history.push('/')
+    };
+
+    function addFavorite(id, user) {
+        console.log(id)
+        movies.forEach(element => {
+            if(element.imdbID === id){
+                element.user = user;
+                console.log(element)
+                axios.post('https://tech-challenge-backend.herokuapp.com/favorites', element).then(response => console.log(response));
+            }
+        });
+    };
+
     return (
         
     <div>
         <div id="search-navbar">
-            <div className="search-brand"><a href="/"><i className="fas fa-video"></i> MovieWiki</a></div>
+            <div className="search-brand"><p onClick={HomeButton}><i className="fas fa-video"></i> Fleye-Tech-Challenge</p></div>
         </div>
         
         <p className="result">Movies with keyword "batman"</p>
@@ -37,12 +54,11 @@ const Search = () => {
                         <p className="card-rating"><span className="topic">IMDB ID:</span>  <i className="fas fa-star"></i> <span className="rating">{movie.imdbID}</span></p>
                         <p><span className="topic">Type: </span> &nbsp;movie </p> 
                         <p><span className="year">Year: </span> {movie.Year} </p> 
-                        <p id={movie.imdbID} className="heart"><span><i className="fas fa-thumbs-up"></i></span>  Add to Favorite List</p> 
+                        <p id={movie.imdbID} className="heart" onClick={(e) => addFavorite(e.target.id, user)}><span><i className="fas fa-thumbs-up"></i></span>  Add to Favorite List</p> 
                     </div>    
                 </div> 
             )
         })}
-        
     </div>
     </div>
     )

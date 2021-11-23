@@ -19,7 +19,7 @@ body{
 
 #search-navbar{
     width: 100%;
-    height: 80px;
+    height: 120px;
     background: var(--grayback);
     position: relative;
     top: 0;
@@ -38,7 +38,7 @@ body{
     font-family: 'MuseoModerno', cursive;
 }
 
-#search-navbar .search-brand a{
+#search-navbar .search-brand p{
     text-decoration: none;
     color: white;
 }
@@ -425,4 +425,13 @@ a{
     .search-container{
         top: 140px;
     }
+}
+
+#login-register:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.search-brand p{
+    cursor: pointer;
 }
