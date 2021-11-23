@@ -1,47 +1,62 @@
 import './App.css';
-import { Helmet } from "react-helmet";
-import axios from 'axios';
+import 'firebase/auth'
+import Header from './components/Header';
+import Signin from './pages/Signin';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Search from './pages/Search';
+import Favorites from './pages/Favorites';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Background from './components/background';
+import { useEffect, useState } from 'react';
+import { auth } from './firebase';
+
 
 function App() {
-  const fetchData = () => {
-    return axios.get("https://tech-challenge-backend.herokuapp.com/sms").then((response) => console.log(response.data));
-  };
-
-  fetchData();
-
-  const fetchData2 = () => {
-    return axios.get("https://tech-challenge-backend.herokuapp.com/").then((response) => console.log(response.data));
-  };
-
-  fetchData2();
+  const [user, setUser] = useState(null)
+  useEffect(() => {
+    console.log("useEffect")
+    const unsubscribe = auth.onAuthStateChanged(userAuth => {
+      const user = {
+        uid: userAuth?.uid,
+        email: userAuth?.email
+      }
+      if(userAuth){
+        console.log(userAuth)
+        setUser(user)
+      }else{
+        setUser(null)
+      }
+    })
+    return unsubscribe
+    }, [])
 
   return (
-    <div className="App">
-      <Helmet>
-          <title>MovieWiki</title>
-          <meta charset="UTF-8"/>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-          <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;500;700&display=swap" rel="stylesheet"/>  
-          <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;500;600&display=swap" rel="stylesheet"/>
-          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
-          <link rel="stylesheet" href="/stylesheets/homePage.css"/>
-      </Helmet>
-      <div className="back"></div>
-      <div className="filter"></div>
-      <div className="brand"> 
-        <a href="#"><i className="fas fa-video"></i> MovieWiki</a>
+    <Router>
+      <div className="app-container">
+        {user ? <Home /> : <Login />}
+        <Header/>
+        <Background/>
+        <Switch>
+          <Route path="/" exact>
+            <Home/>
+          </Route>
+          <Route path="/login" exact>
+            <Login/>
+          </Route>
+          <Route path="/signin" exact>
+            <Signin/>
+          </Route>
+          <Route path="/search" exact>
+            <Search/>
+          </Route>
+          <Route path="/Favorites" exact>
+            <Favorites/>
+          </Route>
+        </Switch>
       </div>
-      <div className="container">
-        <p className="search">Search Movie </p>
-        <div className="form">
-            <input type="text" placeholder="Enter Movie name or keyword" name="movie" required=""/>
-            <input type="Submit" value="Find"/>
-        </div>
-      </div>
-    </div>
+    </Router>
   );
 }
-
-console.log("oi")
 
 export default App;

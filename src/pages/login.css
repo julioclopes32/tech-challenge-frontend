@@ -1,0 +1,9 @@
+.userform input[type='text']{
+    border-radius: 25px;
+    width: 30%;
+}
+
+#login-register:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
