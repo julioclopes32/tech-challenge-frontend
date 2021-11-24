@@ -34,6 +34,9 @@ class Favorites extends Component {
           .then(res => {
             let uid = this.getUser();
             console.log(res.data[uid]);
+            if(res.data[uid] === null || res.data[uid] === undefined){
+                return
+            }
             let keys = Object.keys(res.data[uid])
             console.log(keys)
             keys.forEach(element => {
