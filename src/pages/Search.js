@@ -25,7 +25,7 @@ const Search = () => {
             if(element.imdbID === id){
                 element.user = user;
                 console.log(element)
-                axios.post('https://tech-challenge-backend.herokuapp.com/favorites', element).then(response => console.log(response));
+                axios.post('https://tech-challenge-backend.herokuapp.com/favorites', element, {crossdomain: true}).then(response => console.log(response));
             }
         });
     };
