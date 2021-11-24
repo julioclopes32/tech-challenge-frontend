@@ -32,18 +32,20 @@ class Favorites extends Component {
     async componentDidMount() {
         axios.get('https://tech-challenge-backend.herokuapp.com/getfavorites?id='+this.getUser)
           .then(res => {
+            console.log(res);
             let uid = this.getUser();
             console.log(res.data[uid]);
             if(res.data[uid] === null || res.data[uid] === undefined){
                 return
+            }else{
+                let keys = Object.keys(res.data[uid])
+                console.log(keys)
+                keys.forEach(element => {
+                    this.appendMovies(res.data[uid][element].post_body)
+                });
+                console.log(this.getMovies())
+                this.setState({loading:"false"});
             }
-            let keys = Object.keys(res.data[uid])
-            console.log(keys)
-            keys.forEach(element => {
-                this.appendMovies(res.data[uid][element].post_body)
-            });
-            console.log(this.getMovies())
-            this.setState({loading:"false"});
           })
     }
 
