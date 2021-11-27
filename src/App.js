@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Signin from './pages/Signin';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Search from './pages/Search';
+import Results from './pages/Results';
 import Favorites from './pages/Favorites';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Background from './components/background';
@@ -41,16 +41,19 @@ function App() {
           <Route path="/" exact>
             <Home/>
           </Route>
+          <Route path="/home" exact>
+            <Home/>
+          </Route>
           <Route path="/login" exact>
             <Login/>
           </Route>
           <Route path="/signin" exact>
             <Signin/>
           </Route>
-          <Route path="/search" exact>
-            <Search/>
+          <Route path="/results" exact>
+            <Results/>
           </Route>
-          <Route path="/Favorites" exact>
+          <Route path="/favorites" exact>
             <Favorites/>
           </Route>
         </Switch>
