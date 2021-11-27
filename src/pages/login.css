@@ -7,3 +7,28 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.alert {
+  display: none;
+  margin: auto;
+  width: 50%;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  margin-top: 20px;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
