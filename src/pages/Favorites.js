@@ -12,9 +12,9 @@ class Favorites extends Component {
     }
 
     state = {
-        //loading: "true",
-        //user: auth.currentUser._delegate.uid,
-        //movies : []
+        loading: "true",
+        user: auth.currentUser,
+        movies : []
     };
 
     getUser(){
@@ -29,22 +29,43 @@ class Favorites extends Component {
         this.state.movies.push(value)
     }
 
+    removeFavorite(id, user) {
+        this.getMovies().forEach(element => {
+            if(element.imdbID === id){
+                element.user = user;
+                console.log(element)
+                axios.post('http://tech-challenge-backend.herokuapp.com/removefavorites', element, {crossdomain: true})
+                .then((response) => {
+                    console.log(response);
+                    if(response.statusText==="OK"){
+                        alert("Movie Successfully removed from Favorite List");
+                        this.props.history.push("/home")
+                    }
+                });
+            }
+        });
+    };
+
     async componentDidMount() {
         axios.get('https://tech-challenge-backend.herokuapp.com/getfavorites?id='+this.getUser)
           .then(res => {
-            console.log(res);
             let uid = this.getUser();
-            console.log(res.data[uid]);
-            if(res.data[uid] === null || res.data[uid] === undefined){
-                return
+            if(this.getUser()===null || this.getUser()===undefined){
+                this.props.history.push("/login")
             }else{
-                let keys = Object.keys(res.data[uid])
-                console.log(keys)
-                keys.forEach(element => {
-                    this.appendMovies(res.data[uid][element].post_body)
-                });
-                console.log(this.getMovies())
-                this.setState({loading:"false"});
+                uid = this.getUser()._delegate.uid;
+                console.log(res.data[uid]);
+                if(res.data[uid] === null || res.data[uid] === undefined){
+                    return
+                }else{
+                    let keys = Object.keys(res.data[uid])
+                    console.log(keys)
+                    keys.forEach(element => {
+                        this.appendMovies(res.data[uid][element].post_body)
+                    });
+                    console.log(this.getMovies())
+                    this.setState({loading:"false"});
+                }
             }
           })
     }
@@ -59,7 +80,7 @@ class Favorites extends Component {
             
             <p className="result">Favorite Movies</p>
             <div className="search-container">
-            {console.log(this.getMovies())/*this.getMovies().map((movie) => {
+            {this.getMovies().map((movie) => {
                     return (
                         <div className="card">
                             <div className="card-image-box">
@@ -73,11 +94,11 @@ class Favorites extends Component {
                                 <p className="card-rating"><span className="topic">IMDB ID:</span>  <i className="fas fa-star"></i> <span className="rating">{movie.imdbID}</span></p>
                                 <p><span className="topic">Type: </span> &nbsp;movie </p> 
                                 <p><span className="year">Year: </span> {movie.Year} </p> 
+                                <p id={movie.imdbID} className="heart" onClick={(e) => this.removeFavorite(e.target.id, this.getUser())}><span><i className="fas fa-thumbs-down"></i></span>  Remove from Favorite List</p> 
                             </div>    
                         </div> 
                     )
-                })*/}
-
+                })}
             </div>
             </div>
        
@@ -86,33 +107,6 @@ class Favorites extends Component {
 }
 
 export default withRouter(Favorites);
-
-
-
-
-
-/*LAST SAVED
-
- <div>
-
-            */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
