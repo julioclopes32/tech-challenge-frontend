@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import './Search.css'
+import './Results'
 import axios from 'axios';
 import { auth } from '../firebase';
 import { withRouter } from "react-router-dom";
@@ -12,9 +12,9 @@ class Favorites extends Component {
     }
 
     state = {
-        loading: "true",
-        user: auth.currentUser._delegate.uid,
-        movies : []
+        //loading: "true",
+        //user: auth.currentUser._delegate.uid,
+        //movies : []
     };
 
     getUser(){
@@ -52,14 +52,14 @@ class Favorites extends Component {
     render() {
         console.log("Rendering")
         return (
-        <div>
+            <div>
             <div id="search-navbar">
                 <div className="search-brand"><p onClick={() => this.props.history.push('/')}><i className="fas fa-video"></i> Fleye-Tech-Challenge</p></div>
             </div>
             
             <p className="result">Favorite Movies</p>
             <div className="search-container">
-            {this.getMovies().map((movie) => {
+            {console.log(this.getMovies())/*this.getMovies().map((movie) => {
                     return (
                         <div className="card">
                             <div className="card-image-box">
@@ -76,15 +76,46 @@ class Favorites extends Component {
                             </div>    
                         </div> 
                     )
-                })}
+                })*/}
 
             </div>
             </div>
+       
         );
     }
 }
 
 export default withRouter(Favorites);
+
+
+
+
+
+/*LAST SAVED
+
+ <div>
+
+            */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 
