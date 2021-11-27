@@ -1,108 +1,140 @@
+import React, {Component} from 'react'
 import '../App.css';
-import axios from 'axios';
-import { useState } from 'react';
 import { auth } from '../firebase';
-import {useHistory} from 'react-router-dom';
+import { withRouter } from "react-router-dom";
+import ReactDOM from 'react-dom'; 
 
-var movieData = null;
-
-const Home = () => {
-  const history = useHistory();
-    const user = auth.currentUser;
-    if(user === null){
-        history.push('/login')
-    }
-  const [movieName, setMovieName] = useState("");
-  const apikey = "925eba28"; 
-  /*const fetchData = () => {
-    return axios.get("https://tech-challenge-backend.herokuapp.com/sms").then((response) => console.log(response.data));
-  };
-
-  fetchData();
-
-  const fetchData2 = () => {
-    return axios.get("https://tech-challenge-backend.herokuapp.com/").then((response) => console.log(response.data));
-  };
-  
-  fetchData2();
-  */
-
-  const LogOut = () => {
-    console.log("LogOut");
-    auth.signOut().then(function() {
-      alert("Sign-Out Successfully");
-      history.push('/login')
-    }).catch(function(error) {
-      alert("error");
-    });
-
-  };
-
-  const Favorites = () => {
-    console.log("Favorites");
-    history.push('/Favorites')
-  };
-
-  const onleave = () =>{
-    setTimeout(function(){var element = document.getElementById("userBox");element.style.visibility='hidden';console.log("onleave");},3000);
-  };
-
-  const submitMovie= () => {
-    if(movieName === ""){
-      alert("fill movie Name!")
-      return
-    }
-    return axios.get('https://www.omdbapi.com/?apikey='+apikey+'&s='+encodeURI(movieName)).then(function(response){
-      console.log(response.data);
-      movieData = response.data;
-      if(response.data.Response === "False"){
-        alert(response.data.Error)
-        return
-      }else if (response.data.Response === "True"){
-        history.push('/Search')
-      }
-    }); 
+class Home extends Component {
+  constructor(props){
+      super(props);
+      props = this.props
   }
 
-  return (
-    <div className="home">
-      <div className="brand"> 
-        <p><i className="fas fa-video"></i> Fleye-Tech-Challenge</p>
-      </div>
-      <div className="userImage">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="UserImage"/>
-        <div id="userIcon" 
-        className="userIcon"
-        onMouseEnter={function(){var element = document.getElementById("userBox");
-        element.style.display='block';console.log("onEnter")}} 
-        onMouseLeave={onleave}>
-          <i id="up" className="fas fa-chevron-up"></i>
-          <i id="down" className="fas fa-chevron-down"></i>
+  state = {
+      user: auth.currentUser,
+      alertText: "ALERTA!",
+      movie : "",
+  };
+
+  getProps(){
+    return(this.state.props)
+  }
+  getAlertText(){
+      return(this.state.alertText)
+  }
+
+  hideAlert(){
+      this.alerta.style.display='none';
+  }
+
+  showAlert(text){
+      this.setState({alertText:text});
+      this.alerta.style.display='block';
+  }
+
+  getMovie(){
+      return(this.state.movie)
+  }
+
+  getUser(){
+    return(this.state.user)
+  }
+
+  userOptionsEnter(){
+    this.userOptions.style.display='block'
+  }
+
+  userOptionsLeave(){
+    this.userOptions.style.display='none'
+  }
+
+  favorites(){
+    this.props.history.push('/favorites')
+  }
+
+  logout(){
+    auth.signOut().then(()=>{
+      this.props.history.push('/login');
+      alert("Log-Out Successfully");
+    }).catch(function(error){
+      console.log(error.toString())
+    });
+  }
+
+  resultMovie(){
+    if(this.getMovie() === ""){
+      this.hideAlert();
+      setTimeout(() => {
+        this.showAlert("Fill Movie Name!")
+      }, 1000);
+    }else{
+      this.props.history.push('/results?movie='+this.getMovie());
+    }
+  }
+
+  submitMovie(){
+    /*
+    const response = await axios.get('https://www.omdbapi.com/?apikey=' + this.getApiKey() + '&s=' + encodeURI(movieName));
+    console.log(response.data);
+    movieData = response.data;
+    if (response.data.Response === "False") {
+      alert(response.data.Error);
+      return;
+    } else if (response.data.Response === "True") {
+      history.push('/Search');
+    } */
+  }
+
+  async componentDidMount() {
+      var alerta = ReactDOM.findDOMNode(this.alerta);
+      var userOptions = ReactDOM.findDOMNode(this.userOptions);
+  }
+
+  render() {
+      if(this.state.user===null){
+        this.props.history.push('/login')
+      }
+      return (
+        <div className="home">
+        <div className="brand"> 
+          <p><i className="fas fa-video"></i> Fleye-Tech-Challenge</p>
         </div>
-        <div id="userBox" className="userBox">
-          <p onClick={Favorites}>favorites</p>
-          <p onClick={LogOut}>log-Out</p>
+        <div className="userImage"
+          onMouseEnter={()=>{this.userOptionsEnter()}}
+          onMouseLeave={()=>{this.userOptionsLeave()}}>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="UserImage"/>
+          <div id="userIcon" 
+          className="userIcon">
+            <i id="up" className="fas fa-chevron-up"></i>
+            <i id="down" className="fas fa-chevron-down"></i>
+          </div>
+          <div id="userOptions" className="userOptions" ref={userOptions => this.userOptions = userOptions}>
+            <p onClick={()=>{this.favorites()}}>favorites</p>
+            <p onClick={()=>{this.logout()}}>log-Out</p>
+          </div> 
+        </div>
+        <div className="container">
+          <p className="search">Search Movie </p>
+          <div className="form">
+              <input 
+              type="text"
+              placeholder="Enter Movie name or keyword"
+              name="movie"
+              required=""
+              onChange={(e) => {
+                this.setState({movie:e.target.value});
+              }}/>
+              <input 
+              type="Submit" 
+              onClick = {()=>{this.resultMovie()}}/>
+              <div id="alerta" className="alert" ref={alerta => this.alerta = alerta}>
+                  {this.getAlertText()}
+              </div>
+          </div>
         </div>
       </div>
-      <div className="container">
-        <p className="search">Search Movie </p>
-        <div className="form">
-            <input 
-            type="text"
-            placeholder="Enter Movie name or keyword"
-            name="movie"
-            required=""
-            onChange={(e) => {
-              setMovieName(e.target.value);
-            }}/>
-            <input 
-            type="Submit" 
-            onClick = {submitMovie}/>
-        </div>
-      </div>
-    </div>
-  );
+      )
+  }
 }
 
-export {movieData};
-export default Home;
+export default withRouter(Home);
