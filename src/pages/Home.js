@@ -42,10 +42,14 @@ class Home extends Component {
 
   userOptionsEnter(){
     this.userOptions.style.display='block'
+    this.down.style.display='block'
+    this.up.style.display='none'
   }
 
   userOptionsLeave(){
     this.userOptions.style.display='none'
+    this.down.style.display='none'
+    this.up.style.display='inline-block'
   }
 
   favorites(){
@@ -85,11 +89,6 @@ class Home extends Component {
     } */
   }
 
-  async componentDidMount() {
-      var alerta = ReactDOM.findDOMNode(this.alerta);
-      var userOptions = ReactDOM.findDOMNode(this.userOptions);
-  }
-
   render() {
       if(this.state.user===null){
         this.props.history.push('/login')
@@ -105,8 +104,8 @@ class Home extends Component {
           <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="UserImage"/>
           <div id="userIcon" 
           className="userIcon">
-            <i id="up" className="fas fa-chevron-up"></i>
-            <i id="down" className="fas fa-chevron-down"></i>
+            <i id="up" className="fas fa-chevron-up" ref={up => this.up = up}></i>
+            <i id="down" className="fas fa-chevron-down" ref={down => this.down = down}></i>
           </div>
           <div id="userOptions" className="userOptions" ref={userOptions => this.userOptions = userOptions}>
             <p onClick={()=>{this.favorites()}}>favorites</p>
