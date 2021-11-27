@@ -71,7 +71,6 @@ class Favorites extends Component {
     }
 
     render() {
-        console.log("Rendering")
         return (
             <div>
             <div id="search-navbar">
