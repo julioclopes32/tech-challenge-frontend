@@ -1,87 +1,120 @@
-import React from 'react'
-import { useState } from 'react';
+import React, {Component} from 'react'
 import { auth } from '../firebase';
 import '../App.css';
-import {useHistory} from 'react-router-dom';
+import { withRouter } from "react-router-dom";
+import ReactDOM from 'react-dom'; 
 
-const Login = () => {
-    const history = useHistory();
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
 
-    function SignInButton() {
-        history.push('/signin')
+class Login extends Component {
+    constructor(props){
+        super(props);
+        props = this.props
+    }
+
+    state = {
+        alertText: "ALERTA!",
+        username : "",
+        password : "",
     };
 
-    function goHome() {
-        history.push('/')
-    };
+    getAlertText(){
+        return(this.state.alertText)
+    }
 
-    function validateEmail(email) {
+    hideAlert(){
+        this.alerta.style.display='none';
+    }
+
+    showAlert(text){
+        this.setState({alertText:text});
+        this.alerta.style.display='block';
+    }
+
+    getUsername(){
+        return(this.state.username)
+    }
+
+    getPassword(){
+        return(this.state.password)
+    }
+
+    validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
-    const signIn = e => {
+    signIn(){
+        this.hideAlert();
+        const username = this.getUsername();
+        const password = this.getPassword();
         if(username === "" || password === ""){
-            alert("Fill all fields!")
-        }else if(!validateEmail(username)){
-            alert("Email baddly formatted!")
+            this.showAlert("Fill all fields!")
+        }else if(!this.validateEmail(username)){
+            this.showAlert("Email baddly formatted!");
         }
         else{
-            e.preventDefault();
             auth.signInWithEmailAndPassword(
                 username,
                 password
             ).then(user=>{
-                alert("Successfully Logged!");
-                goHome();
+                this.showAlert("Successfully Logged!");
+                this.props.history.push('/');
             }).catch(err=>{
-                alert(err)
+                this.showAlert(err.toString())
             })
         }
     }
 
-    return (
-    <body>
-    <div className="home">
-      <div className="brand"> 
-        <p><i className="fas fa-video"></i> Fleye-Tech-Challenge</p>
-      </div>
-      <div className="container">
-        <p className="search">Login </p>
-        <div className="userform">
-            <input
-            type="email"
-            placeholder="Username"
-            defaultValue="Username"
-            name="movie"
-            required=""
-            onChange={(e) => {
-                setUsername(e.target.value);
-            }}/>
-            <br/>
-            <br/>
-            <input
-            type="password"
-            placeholder="Password"
-            defaultValue="Password"
-            name="movie"
-            required=""
-            onChange={(e) => {
-                setPassword(e.target.value);
-            }}/>
-            <br/>
-            <br/>
-            <input id="login-btn"
-            type="Submit"
-            defaultValue="Login" 
-            onClick={signIn}/>
+    async componentDidMount() {
+        var alerta = ReactDOM.findDOMNode(this.alerta);
+    }
+
+    render() {
+        return (
+        <div>
+            <div className="home">
+            <div className="brand"> 
+                <p><i className="fas fa-video"></i> Fleye-Tech-Challenge</p>
+            </div>
+            <div className="container">
+                <p className="search">Login </p>
+                <div className="userform">
+                    <input
+                    type="email"
+                    placeholder="Username"
+                    defaultValue="Username"
+                    name="movie"
+                    required=""
+                    onChange={(e) => {
+                        this.setState({username:e.target.value});
+                    }}/>
+                    <br/>
+                    <br/>
+                    <input
+                    type="password"
+                    placeholder="Password"
+                    defaultValue="Password"
+                    name="movie"
+                    required=""
+                    onChange={(e) => {
+                        this.setState({password:e.target.value});
+                    }}/>
+                    <br/>
+                    <br/>
+                    <input id="login-btn"
+                    type="Submit"
+                    defaultValue="Login" 
+                    onClick={()=>{this.hideAlert();setTimeout(() => {this.signIn()}, 1000);}}/>
+                    <div id="alerta" className="alert" ref={alerta => this.alerta = alerta}>
+                        {this.getAlertText()}
+                    </div>
+                </div>
+                <p id="login-register" onClick={()=>this.props.history.push('/signin')}>don't have an account? sign-up!</p>
+            </div>
+            </div>
         </div>
-        <p id="login-register" onClick={SignInButton}>don't have an account? sign-up!</p>
-      </div>
-    </div>
-    </body>
-    )
+        )
+    }
 }
-export default Login
+
+export default withRouter(Login);
