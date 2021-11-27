@@ -124,18 +124,9 @@ body{
   margin-left: 10px;
 }
 
-
-#up:hover{
-  display: none;
-}
-
 #down{
   display: none;
   margin-top: 18px;
-}
-
-#up:hover~#down{
-  display: block;
 }
 
 .userImage img {
