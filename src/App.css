@@ -137,17 +137,7 @@ body{
 #up:hover~#down{
   display: block;
 }
-/*
-#userIcon:hover~#userBox{
-  display: block;
-  transition-delay:12s;
-  transition-property: display;
-}
 
-#userBox:hover{
-  display: block;
-}
-*/
 .userImage img {
   width: 50px;
 }
@@ -183,7 +173,8 @@ a{
   }
 }
 
-.userBox{
+.userOptions{
+  display: none;
   width: 180px;
   align-items: center;
   outline: 1px solid black;
@@ -191,7 +182,7 @@ a{
   opacity: 60%;
 }
 
-.userBox p{
+.userOptions p{
   font-size: 22px;
   margin: 0px;
   padding: 5px;
