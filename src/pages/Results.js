@@ -45,28 +45,6 @@ class Results extends Component {
         return(this.state.alert)
     }
 
-    submitMovie(){
-        this.hideAlert();
-        const username = this.getUsername();
-        const password = this.getPassword();
-        if(username === "" || password === ""){
-            this.showAlert("Fill all fields!")
-        }else if(!this.validateEmail(username)){
-            this.showAlert("Email baddly formatted!");
-        }
-        else{
-            auth.signInWithEmailAndPassword(
-                username,
-                password
-            ).then(user=>{
-                this.showAlert("Successfully Logged!");
-                this.props.history.push('/');
-            }).catch(err=>{
-                this.showAlert(err.toString())
-            })
-        }
-    }
-
     addFavorite(id, user) {
         this.getMoviesList().forEach(element => {
             if(element.imdbID === id){
@@ -81,8 +59,10 @@ class Results extends Component {
         const windowUrl = window.location.search;
         const params = new URLSearchParams(windowUrl);
         const movieName = params.get("movie");
-        this.setState({movie:params.get("movie")});
-        const response = await axios.get('http://www.omdbapi.com/?apikey=' + this.getApiKey() + '&s=' + movieName);
+        this.setState({movie:movieName});
+        const response = await axios.get('https://tech-challenge-backend.herokuapp.com/results?movie='+movieName);
+        
+        //const response = await axios.get('http://www.omdbapi.com/?apikey=' + this.getApiKey() + '&s=' + movieName);
         console.log(response.data);
         this.setState({movies:response.data.Search});
         if (response.data.Response === "False") {
