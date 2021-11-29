@@ -11,7 +11,7 @@ import Background from './components/background';
 import { useEffect, useState } from 'react';
 import { auth } from './firebase';
 
-
+//setting user authentication persistence on app during page swapping.
 function App() {
   const [user, setUser] = useState(null)
   useEffect(() => {
@@ -31,6 +31,7 @@ function App() {
     return unsubscribe
     }, [])
 
+  //defining routers, to access differente app pages.
   return (
     <Router>
       <div className="app-container">

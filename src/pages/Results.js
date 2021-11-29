@@ -3,7 +3,6 @@ import './Results.css'
 import axios from 'axios';
 import { auth } from '../firebase';
 import { withRouter } from "react-router-dom";
-import ReactDOM from 'react-dom'; 
 
 
 class Results extends Component {
@@ -45,6 +44,7 @@ class Results extends Component {
         return(this.state.alert)
     }
 
+    //Send HTTP Post method to beckend to add movie to favorite list.
     addFavorite(id, user) {
         this.getMoviesList().forEach(element => {
             if(element.imdbID === id){
@@ -55,21 +55,18 @@ class Results extends Component {
         });
     };
 
+    //Get result movie list from cache/firebase/api and then render on response.
     async componentDidMount() {
         const windowUrl = window.location.search;
         const params = new URLSearchParams(windowUrl);
         const movieName = params.get("movie");
         this.setState({movie:movieName});
         const response = await axios.get('https://tech-challenge-backend.herokuapp.com/results?movie='+movieName);
-        
-        //const response = await axios.get('http://www.omdbapi.com/?apikey=' + this.getApiKey() + '&s=' + movieName);
         console.log(response.data);
         this.setState({movies:response.data.Search});
         if (response.data.Response === "False") {
         this.setState({alert:response.data.Error});
-        } /*else if (response.data.Response === "True") {
-        history.push('/Search');
-        }*/
+        }
     }
 
     render() {

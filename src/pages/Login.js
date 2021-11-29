@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import { auth } from '../firebase';
 import '../App.css';
 import { withRouter } from "react-router-dom";
-import ReactDOM from 'react-dom'; 
 
 
 class Login extends Component {
@@ -38,11 +37,13 @@ class Login extends Component {
         return(this.state.password)
     }
 
+    //Validate email format
     validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
+    //login with firebase authentication.
     signIn(){
         this.hideAlert();
         const username = this.getUsername();
@@ -63,10 +64,6 @@ class Login extends Component {
                 this.showAlert(err.toString())
             })
         }
-    }
-
-    async componentDidMount() {
-        var alerta = ReactDOM.findDOMNode(this.alerta);
     }
 
     render() {

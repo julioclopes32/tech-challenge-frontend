@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { auth } from '../firebase';
 import './login.css';
-import ReactDOM from 'react-dom'; 
 import { withRouter } from "react-router-dom";
 
 
@@ -43,11 +42,13 @@ class Signin extends Component {
         return(this.state.confirmPass)
     }
 
+    //Validate Email format.
     validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
+    //siup account in firebase authentication.
     signUp(e){
         this.hideAlert();
         const username = this.getUsername();
@@ -69,12 +70,12 @@ class Signin extends Component {
                 alert("Successfull Registered")
                 this.signIn()
             }).catch(err=>{
-                //this.showAlert(err)
                 this.showAlert(err.toString())
             })
         }
     }
 
+    //Login on successful register.
     signIn(){
         this.hideAlert();
         const username = this.getUsername();
@@ -95,11 +96,6 @@ class Signin extends Component {
                 this.showAlert(err.toString())
             })
         }
-    }
-
-    async componentDidMount() {
-        var alerta = ReactDOM.findDOMNode(this.alerta);
-        console.log(alerta)
     }
 
     render() {

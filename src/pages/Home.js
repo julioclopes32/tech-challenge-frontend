@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import '../App.css';
 import { auth } from '../firebase';
 import { withRouter } from "react-router-dom";
-import ReactDOM from 'react-dom'; 
 
 class Home extends Component {
   constructor(props){
@@ -40,6 +39,7 @@ class Home extends Component {
     return(this.state.user)
   }
 
+  //Setting animation to square Icon and UserOptions box - hide/show.
   userOptionsEnter(){
     this.userOptions.style.display='block'
     this.down.style.display='block'
@@ -52,10 +52,12 @@ class Home extends Component {
     this.up.style.display='inline-block'
   }
 
+  //go to favorite page
   favorites(){
     this.props.history.push('/favorites')
   }
 
+  //logout from account - go to login page
   logout(){
     auth.signOut().then(()=>{
       this.props.history.push('/login');
@@ -65,6 +67,7 @@ class Home extends Component {
     });
   }
 
+  //
   resultMovie(){
     if(this.getMovie() === ""){
       this.hideAlert();
@@ -74,19 +77,6 @@ class Home extends Component {
     }else{
       this.props.history.push('/results?movie='+this.getMovie());
     }
-  }
-
-  submitMovie(){
-    /*
-    const response = await axios.get('https://www.omdbapi.com/?apikey=' + this.getApiKey() + '&s=' + encodeURI(movieName));
-    console.log(response.data);
-    movieData = response.data;
-    if (response.data.Response === "False") {
-      alert(response.data.Error);
-      return;
-    } else if (response.data.Response === "True") {
-      history.push('/Search');
-    } */
   }
 
   render() {
